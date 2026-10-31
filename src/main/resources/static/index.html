@@ -1,0 +1,618 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Student Management System</h1>
+
+
+        ADD STUDENT
+
+        <h2>Add Student</h2>
+
+        <form id="studentForm">
+            <table cellspacing="30">
+            <tr>
+                <td>
+            <input
+                type="text"
+                id="name"
+                placeholder="Student Name"
+                required
+                >
+                </td>
+                
+                <td>
+            <input
+                type="text"
+                id="branch"
+                placeholder="Branch"
+                required>
+            <select id="branch" required>
+                <option value="">Select Branch</option>
+                <option value="CSE">CSE</option>
+                <option value="AIML">AIML</option>
+                <option value="ECE">ECE</option>
+                <option value="EEE">EEE</option>
+                <option value="CIVIL">CIVIL</option>
+                <option value="MECH">MECH</option>
+            </select>
+            </td>
+            </tr>
+            <tr >
+                <td>
+            <input
+                type="text"
+                id="year"
+                placeholder="Year"
+                required>
+            <select id="year" required>
+                <option value="">Select Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+            </select>
+            </td>
+
+            <td>
+
+            <input
+                type="tel"
+                id="mobile"
+                placeholder="Mobile Number"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                inputmode="numeric"
+                required>
+                </td>
+            </tr>
+            </table>
+    
+
+            <button type="submit">
+                Add Student
+            </button>
+            </table>
+
+        </form>
+
+        <div id="message"></div>
+
+
+        SEARCH STUDENT
+
+        <h2>Search Student</h2>
+
+        <input
+            type="number"
+            id="studentId"
+            placeholder="Enter Student ID"
+            min="1">
+
+        <button onclick="getStudent()">
+            Search
+        </button>
+
+        <div id="result"></div>
+
+
+        ALL STUDENTS
+
+        <h2>All Students</h2>
+
+        <button onclick="getAllStudents()">
+            View All Students
+        </button>
+
+        Search / Filter
+
+        <div class="filter-section">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by name or branch..."
+                onkeyup="filterStudents()">
+
+        </div>
+
+        <div id="studentsTable"></div>
+
+
+        EDIT STUDENT
+
+        <div id="editSection" style="display: none;">
+
+            <h2>Update Student</h2>
+
+            <form id="editStudentForm">
+
+                <input
+                    type="text"
+                    id="editName"
+                    placeholder="Student Name"
+                    required>
+
+                <input
+                    type="text"
+                    id="editBranch"
+                    placeholder="Branch"
+                    required>
+                <select id="editBranch" required>
+                    <option value="">Select Branch</option>
+                    <option value="CSE">CSE</option>
+                    <option value="AIML">AIML</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="CIVIL">CIVIL</option>
+                    <option value="MECH">MECH</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="editYear"
+                    placeholder="Year"
+                    required>
+                <select id="editYear" required>
+                    <option value="">Select Year</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                </select>
+
+                <input
+                    type="tel"
+                    id="editMobile"
+                    placeholder="Mobile Number"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    inputmode="numeric"
+                    required>
+
+                <button type="submit">
+                    Update Student
+                </button>
+
+                <button
+                    type="button"
+                    onclick="cancelEdit()">
+
+                    Cancel
+
+                </button>
+
+            </form>
+
+            <div id="updateMessage"></div>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentHub | Student Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-logo">S</div>
+            <div>
+                <h2>StudentHub</h2>
+                <span>Management Portal</span>
+            </div>
+        </div>
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <nav class="navigation">
+            <button class="nav-link active" data-page="dashboard">
+                <span class="nav-icon">▦</span> Dashboard
+            </button>
+
+            <button class="nav-link" data-page="students">
+                <span class="nav-icon">♙</span> All Students
+            </button>
+
+            <button class="nav-link" data-page="addStudent">
+                <span class="nav-icon">＋</span> Add Student
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-note">
+                <div class="note-icon">✓</div>
+                <strong>Student Records</strong>
+                <p>Manage your student information in one place.</p>
+            </div>
+            <span class="version-label">StudentHub · v1.0</span>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <button class="mobile-menu" id="mobileMenu"
+                        aria-label="Toggle navigation">☰</button>
+                <p class="eyebrow">STUDENT MANAGEMENT SYSTEM</p>
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <p class="page-subtitle" id="pageSubtitle">
+                    Monitor student records and statistics.
+                </p>
+            </div>
+
+            <button class="primary-btn" id="topAddButton">
+                <span>＋</span> Add Student
+            </button>
+        </header>
+
+        <div id="globalMessage" class="global-message"
+             role="status" aria-live="polite"></div>
+
+        <!-- DASHBOARD PAGE -->
+        <section class="page-section" id="dashboardPage">
+
+            <div class="welcome-banner">
+                <div>
+                    <span class="welcome-tag">YOUR ACADEMIC OVERVIEW</span>
+                    <h2>Welcome to StudentHub 👋</h2>
+                    <p>Manage student information efficiently and keep
+                       your records organized.</p>
+                </div>
+                <div class="welcome-symbol">🎓</div>
+            </div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>Overview</h2>
+                    <p>Statistics based on your student database.</p>
+                </div>
+                <button class="outline-btn" id="refreshButton">
+                    ↻ Refresh Data
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Students</span>
+                        <span class="stat-icon icon-blue">♙</span>
+                    </div>
+                    <h3 id="totalStudents">—</h3>
+                    <p>All registered students</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>CSE Students</span>
+                        <span class="stat-icon icon-purple">⌘</span>
+                    </div>
+                    <h3 id="cseStudents">—</h3>
+                    <p>Computer Science</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>ECE Students</span>
+                        <span class="stat-icon icon-green">⌁</span>
+                    </div>
+                    <h3 id="eceStudents">—</h3>
+                    <p>Electronics and Communication</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Other Branches</span>
+                        <span class="stat-icon icon-orange">▤</span>
+                    </div>
+                    <h3 id="otherStudents">—</h3>
+                    <p>All remaining branches</p>
+                </article>
+            </div>
+
+            <div class="content-card branch-card">
+                <div class="section-heading compact-heading">
+                    <div>
+                        <h2>Branch Distribution</h2>
+                        <p>Number of students in each branch.</p>
+                    </div>
+                </div>
+                <div id="branchStatistics" class="branch-statistics"></div>
+            </div>
+
+            <div class="content-card">
+                <div class="section-heading compact-heading">
+                    <div>
+                        <h2>Recently Added Students</h2>
+                        <p>The latest student records in the database.</p>
+                    </div>
+                    <button class="text-btn" id="viewAllButton">
+                        View all →
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student</th>
+                                <th>Branch</th>
+                                <th>Year</th>
+                                <th>Mobile</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentStudentsBody"></tbody>
+                    </table>
+                </div>
+                <p id="recentEmpty" class="empty-state" hidden>
+                    No student records available yet.
+                </p>
+            </div>
+        </section>
+
+        <!-- ALL STUDENTS PAGE -->
+        <section class="page-section" id="studentsPage" hidden>
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Student Directory</h2>
+                        <p>Search, filter and manage student records.</p>
+                    </div>
+                    <span class="record-count" id="recordCount">0 records</span>
+                </div>
+
+                <div class="filter-toolbar">
+                    <div class="search-box">
+                        <span>⌕</span>
+                        <input type="search" id="searchInput"
+                               placeholder="Search name or mobile..."
+                               aria-label="Search students">
+                    </div>
+
+                    <select id="branchFilter" aria-label="Filter by branch">
+                        <option value="">All Branches</option>
+                        <option value="CSE">CSE</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MECH">MECH</option>
+                        <option value="CIVIL">CIVIL</option>
+                        <option value="AI & DS">AI &amp; DS</option>
+                    </select>
+
+                    <select id="yearFilter" aria-label="Filter by year">
+                        <option value="">All Years</option>
+                        <option value="I">I Year</option>
+                        <option value="II">II Year</option>
+                        <option value="III">III Year</option>
+                        <option value="IV">IV Year</option>
+                    </select>
+
+                    <button class="outline-btn" id="clearFiltersButton">
+                        Clear
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student Details</th>
+                                <th>Branch</th>
+                                <th>Year</th>
+                                <th>Mobile</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <p id="tableEmpty" class="empty-state" hidden>
+                    No students match your search.
+                </p>
+
+                <div class="table-footer">
+                    <span id="tableSummary">Showing 0 students</span>
+                    <button class="outline-btn" id="tableRefreshButton">
+                        ↻ Reload
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADD STUDENT PAGE -->
+        <section class="page-section" id="addStudentPage" hidden>
+
+            <div class="content-card form-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Register New Student</h2>
+                        <p>Enter the student's details below.</p>
+                    </div>
+                    <span class="form-icon">♙</span>
+                </div>
+
+                <form id="studentForm">
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="name">Student Name *</label>
+                            <input type="text" id="name"
+                                   placeholder="Enter full name"
+                                   minlength="2" maxlength="100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number *</label>
+                            <input type="tel" id="mobile"
+                                   placeholder="10-digit mobile number"
+                                   inputmode="numeric"
+                                   pattern="[0-9]{10}" maxlength="10"
+                                   title="Enter exactly 10 digits" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="branch">Branch *</label>
+                            <select id="branch" required>
+                                <option value="">Select branch</option>
+                                <option value="CSE">CSE</option>
+                                <option value="ECE">ECE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="MECH">MECH</option>
+                                <option value="CIVIL">CIVIL</option>
+                                <option value="AI & DS">AI &amp; DS</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="year">Year of Study *</label>
+                            <select id="year" required>
+                                <option value="">Select year</option>
+                                <option value="I">I Year</option>
+                                <option value="II">II Year</option>
+                                <option value="III">III Year</option>
+                                <option value="IV">IV Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="reset" class="outline-btn">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="primary-btn"
+                                id="addSubmitButton">
+                            Save Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- EDIT STUDENT PAGE -->
+        <section class="page-section" id="editStudentPage" hidden>
+
+            <div class="content-card form-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Edit Student Details</h2>
+                        <p>Update the selected student's information.</p>
+                    </div>
+                    <span class="form-icon">✎</span>
+                </div>
+
+                <form id="editStudentForm">
+                    <input type="hidden" id="editId">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="editName">Student Name *</label>
+                            <input type="text" id="editName"
+                                   minlength="2" maxlength="100"
+                                   placeholder="Enter full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editMobile">Mobile Number *</label>
+                            <input type="tel" id="editMobile"
+                                   inputmode="numeric"
+                                   pattern="[0-9]{10}" maxlength="10"
+                                   title="Enter exactly 10 digits" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editBranch">Branch *</label>
+                            <select id="editBranch" required>
+                                <option value="">Select branch</option>
+                                <option value="CSE">CSE</option>
+                                <option value="ECE">ECE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="MECH">MECH</option>
+                                <option value="CIVIL">CIVIL</option>
+                                <option value="AI & DS">AI &amp; DS</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editYear">Year of Study *</label>
+                            <select id="editYear" required>
+                                <option value="">Select year</option>
+                                <option value="I">I Year</option>
+                                <option value="II">II Year</option>
+                                <option value="III">III Year</option>
+                                <option value="IV">IV Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="outline-btn"
+                                id="cancelEditButton">
+                            Cancel
+                        </button>
+                        <button type="submit" class="primary-btn"
+                                id="updateSubmitButton">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <span>StudentHub Student Management System</span>
+            <span>Powered by Spring Boot &amp; MySQL</span>
+        </footer>
+    </main>
+</div>
+
+<!-- CONFIRMATION DIALOG -->
+<dialog id="deleteDialog" class="confirm-dialog">
+    <div class="dialog-symbol">!</div>
+    <h2>Delete Student?</h2>
+    <p id="deleteDialogText">
+        This action will permanently remove the student record.
+    </p>
+    <div class="dialog-actions">
+        <button type="button" class="outline-btn" id="cancelDeleteButton">
+            Cancel
+        </button>
+        <button type="button" class="danger-btn" id="confirmDeleteButton">
+            Delete Student
+        </button>
+    </div>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
